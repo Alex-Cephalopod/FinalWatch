@@ -64,8 +64,19 @@ void ABaseChar::MovementFunction(const FInputActionValue& Value)
 {
 	const FVector2D MovementDirection = Value.Get<FVector2D>();
 
+	//get controller rotation
+	//const FRotator ControllerRotation = GetControlRotation();
+
+	//FRotator NewRotation = FRotator(0.f, ControllerRotation.Yaw, 0.f);
+
+	////get forward vector
+	//const FVector ForwardVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::X);
+	//const FVector RightVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::Y);
+
+	//AddMovementInput(ForwardVector, MovementDirection.Y);
+	//AddMovementInput(RightVector, MovementDirection.X);
+
 	AddMovementInput(GetActorForwardVector(), MovementDirection.Y);
-	//AddMovementInput(GetCapsuleComponent()->GetForwardVector(), MovementDirection.Y);
 	AddMovementInput(GetActorRightVector(), MovementDirection.X);
 }
 
