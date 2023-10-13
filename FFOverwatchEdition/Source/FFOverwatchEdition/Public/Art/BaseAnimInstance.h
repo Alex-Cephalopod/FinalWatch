@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "AnimGraphRuntime/Public/KismetAnimationLibrary.h"
 #include "BaseAnimInstance.generated.h"
 
 /**
  * 
  */
+class UAnimSequence;
+
 UCLASS()
 class FFOVERWATCHEDITION_API UBaseAnimInstance : public UAnimInstance
 {
@@ -19,11 +22,15 @@ protected:
 	
 public:
 
+	UFUNCTION(BlueprintCallable, Category = "Actions|Functions")
+		void PlayAttackAnim();
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 		float Speed;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 		float Direction;
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Actions|Variables")
+		UAnimSequence* AttackAnim;
 };

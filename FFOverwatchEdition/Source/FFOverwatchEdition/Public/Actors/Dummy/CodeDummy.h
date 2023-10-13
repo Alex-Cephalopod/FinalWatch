@@ -4,14 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Actors/BaseChar.h"
-#include "CodeMachinist.generated.h"
+#include "CodeDummy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FFOVERWATCHEDITION_API ACodeMachinist : public ABaseChar
+class FFOVERWATCHEDITION_API ACodeDummy : public ABaseChar
 {
 	GENERATED_BODY()
+
+public:
+
+	ACodeDummy();
 	
 };

@@ -14,29 +14,41 @@ ABaseChar::ABaseChar()
 
 	SpringArmComp->SetupAttachment(GetMesh(), "head");
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	WeaponComp = CreateDefaultSubobject<UChildActorComponent>(TEXT("WeaponComp"));
+	WeaponComp->SetupAttachment(GetMesh(), "GripPoint");
 }
 
 // Called when the game starts or when spawned
 void ABaseChar::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	if (PlayerController)
+
+	if (!bIsDummy)
 	{
-		UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-
-		if (LocalPlayerSubsystem)
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		if (PlayerController)
 		{
-			LocalPlayerSubsystem->AddMappingContext(PlayerMovementContext, 0);
+			UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 
-			/*UInputMappingContext* InputMappingContext = LocalPlayerSubsystem->GetInputMappingContext();
-			MovementAction = InputMappingContext->GetInputActionByName("MovementAction");*/
-			//UInputAction* AimAction = LocalPlayerSubsystem->GetInputActionByName("Aim");
-			//MovementAction = LocalPlayerSubsystem->GetInp;
+			if (LocalPlayerSubsystem)
+			{
+				LocalPlayerSubsystem->AddMappingContext(PlayerMovementContext, 0);
+				LocalPlayerSubsystem->AddMappingContext(PlayerActionsContext, 1);
+			}
 		}
-	}
 
+		AnimInstance = Cast<UBaseAnimInstance>(GetMesh()->GetAnimInstance());
+
+		WeaponComp->SetChildActorClass(WeaponClass);
+		Weapon = Cast<ABaseWeapon>(WeaponComp->GetChildActor());
+		Weapon->WeaponShoot.AddDynamic(AnimInstance, &UBaseAnimInstance::PlayAttackAnim);
+	}
+}
+
+void ABaseChar::Attacks()
+{
+	//Weapon->Attack();
 }
 
 // Called every frame
@@ -57,6 +69,7 @@ void ABaseChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ABaseChar::MovementFunction);
 		EnhancedInputComponent->BindAction(CameraAction, ETriggerEvent::Triggered, this, &ABaseChar::CameraFunction);
+		EnhancedInputComponent->BindAction(LeftClickAction, ETriggerEvent::Triggered, this, &ABaseChar::AttackFunction);
 	}
 }
 
@@ -65,19 +78,19 @@ void ABaseChar::MovementFunction(const FInputActionValue& Value)
 	const FVector2D MovementDirection = Value.Get<FVector2D>();
 
 	//get controller rotation
-	//const FRotator ControllerRotation = GetControlRotation();
+	const FRotator ControllerRotation = GetControlRotation();
 
-	//FRotator NewRotation = FRotator(0.f, ControllerRotation.Yaw, 0.f);
+	FRotator NewRotation = FRotator(0.f, ControllerRotation.Yaw, 0.f);
 
-	////get forward vector
-	//const FVector ForwardVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::X);
-	//const FVector RightVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::Y);
+	//get forward vector
+	const FVector ForwardVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::X);
+	const FVector RightVector = FRotationMatrix(NewRotation).GetUnitAxis(EAxis::Y);
 
-	//AddMovementInput(ForwardVector, MovementDirection.Y);
-	//AddMovementInput(RightVector, MovementDirection.X);
+	AddMovementInput(ForwardVector, MovementDirection.Y);
+	AddMovementInput(RightVector, MovementDirection.X);
 
-	AddMovementInput(GetActorForwardVector(), MovementDirection.Y);
-	AddMovementInput(GetActorRightVector(), MovementDirection.X);
+	/*AddMovementInput(GetActorForwardVector(), MovementDirection.Y);
+	AddMovementInput(GetActorRightVector(), MovementDirection.X);*/
 }
 
 void ABaseChar::CameraFunction(const FInputActionValue& Value)
@@ -86,5 +99,10 @@ void ABaseChar::CameraFunction(const FInputActionValue& Value)
 
 	AddControllerYawInput(CameraDirection.X);
 	AddControllerPitchInput(-CameraDirection.Y);
+}
+
+void ABaseChar::AttackFunction(const FInputActionValue& Value)
+{
+	Attacks();
 }
 

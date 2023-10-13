@@ -16,3 +16,8 @@ void UBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Direction = UKismetAnimationLibrary::CalculateDirection(Pawn->GetVelocity(), Pawn->GetActorRotation());
 	}
 }
+
+void UBaseAnimInstance::PlayAttackAnim()
+{
+	PlaySlotAnimationAsDynamicMontage(AttackAnim, "Shoot");
+}
