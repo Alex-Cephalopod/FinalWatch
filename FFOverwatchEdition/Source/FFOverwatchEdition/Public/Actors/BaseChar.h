@@ -87,6 +87,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Mesh")
 		USkeletalMesh* ThirdPersonMesh;
 
+	UPROPERTY(EditAnywhere, Category = "Mesh")
+		USkeletalMeshComponent* TPS_Mesh;
+
 public:	
 	UFUNCTION(BlueprintCallable, Category = "Actions|Functions")
 		virtual void Attacks();

@@ -17,6 +17,8 @@ ABaseChar::ABaseChar()
 
 	WeaponComp = CreateDefaultSubobject<UChildActorComponent>(TEXT("WeaponComp"));
 	WeaponComp->SetupAttachment(GetMesh(), "GripPoint");
+
+	TPS_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TPS_Mesh"));
 }
 
 // Called when the game starts or when spawned
