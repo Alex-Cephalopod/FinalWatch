@@ -13,6 +13,7 @@
 #include "BaseWeapon.h"
 #include "Components/ChildActorComponent.h"
 #include "Art/BaseAnimInstance.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "BaseChar.generated.h"
 
 class UInputMappingContext;
@@ -79,6 +80,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, Category = "Mesh")
+		USkeletalMesh* FirstPersonMesh;
+
+	UPROPERTY(EditAnywhere, Category = "Mesh")
+		USkeletalMesh* ThirdPersonMesh;
 
 public:	
 	UFUNCTION(BlueprintCallable, Category = "Actions|Functions")

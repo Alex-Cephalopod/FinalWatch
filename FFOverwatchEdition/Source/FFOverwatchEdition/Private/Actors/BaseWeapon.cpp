@@ -18,6 +18,7 @@ void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
+	OwningChar = Cast<APawn>(GetOwner());
 	//OwningChar = Cast<ABaseChar>(GetOwner());
 	
 }
@@ -32,5 +33,15 @@ void ABaseWeapon::Tick(float DeltaTime)
 void ABaseWeapon::Attack()
 {
 
+}
+
+bool ABaseWeapon::CanShoot() const
+{
+	return !bAnimating;
+}
+
+void ABaseWeapon::ShootingEnd()
+{
+	bAnimating = false;
 }
 

@@ -7,28 +7,25 @@ void ACodeMachWeapon::Attack()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Machinist Weapon Attack"));
 
-	//FVector Forwards = OwningChar->CameraComp->GetForwardVector();
-	//FVector WorldLocation = OwningChar->CameraComp->GetComponentLocation();
+	/*FVector Forwards = OwningChar->CameraComp->GetForwardVector();
+	FVector WorldLocation = OwningChar->CameraComp->GetComponentLocation();
 
-	//FVector End = (Forwards * HitscanRange) + WorldLocation;
+	FVector End = (Forwards * HitscanRange) + WorldLocation;*/
 
-	////line trace by channel
-	//FCollisionQueryParams QueryParams;
-	//QueryParams.AddIgnoredActor(this);
-	////QueryParams.AddIgnoredActor(OwningChar);
-	//QueryParams.bTraceComplex = true;
-	//QueryParams.bReturnPhysicalMaterial = true;
-	//	
-	//FHitResult Hit;
+	if (CanShoot())
+	{
+		/*TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
 
-	//bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, WorldLocation,
-	//	End, ECollisionChannel::ECC_Visibility, QueryParams);
+		TArray<AActor*> ActorsToIgnore;
+		ActorsToIgnore.Add(GetOwner());
 
-	////line trace by channel with line visibility for duration
-	//DrawDebugLine(GetWorld(), WorldLocation, End, FColor::Red, false, 1.f, 0, 1.f);
+		FHitResult HitResult;
 
-
-	//we will not to the actors to ignore unless I create a new class for third person characters
-
-	WeaponShoot.Broadcast();
+		UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(), WorldLocation, End, ObjectTypes, false,
+			ActorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true);*/
+		bAnimating = true;
+		WeaponShoot.Broadcast();
+	}
 }

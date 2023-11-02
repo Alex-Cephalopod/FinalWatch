@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 //#include "Actors/BaseChar.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "BaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
@@ -27,14 +28,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		FOnWeaponAttack WeaponShoot;
 
+	UPROPERTY()
+		bool bAnimating;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	ABaseChar* OwningChar;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon")
-		float HitscanRange;
+	APawn* OwningChar;
 
 public:	
 	// Called every frame
@@ -42,5 +43,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Functions")
 		virtual void Attack();
+
+	UFUNCTION(BlueprintCallable, Category = "Functions")
+		bool CanShoot() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Functions")
+		void ShootingEnd();
 
 };

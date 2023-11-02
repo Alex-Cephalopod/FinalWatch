@@ -43,6 +43,8 @@ void ABaseChar::BeginPlay()
 		WeaponComp->SetChildActorClass(WeaponClass);
 		Weapon = Cast<ABaseWeapon>(WeaponComp->GetChildActor());
 		Weapon->WeaponShoot.AddDynamic(AnimInstance, &UBaseAnimInstance::PlayAttackAnim);
+
+		AnimInstance->OnShootingEnd.AddDynamic(Weapon, &ABaseWeapon::ShootingEnd);
 	}
 }
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Actors/BaseWeapon.h"
+#include "Actors/Machinist/CodeMachinist.h"
 #include "CodeMachWeapon.generated.h"
 
 /**
