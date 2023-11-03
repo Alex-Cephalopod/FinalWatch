@@ -2,6 +2,8 @@
 
 
 #include "Actors/BaseChar.h"
+//include core minimal.h
+#include "CoreMinimal.h"
 
 // Sets default values
 ABaseChar::ABaseChar()
@@ -19,6 +21,10 @@ ABaseChar::ABaseChar()
 	WeaponComp->SetupAttachment(GetMesh(), "GripPoint");
 
 	TPS_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TPS_Mesh"));
+	TPS_Mesh->SetupAttachment(GetCapsuleComponent());
+
+	TPS_WeaponChild = CreateDefaultSubobject<UChildActorComponent>(TEXT("TPS_WeaponChild"));
+	TPS_WeaponChild->SetupAttachment(TPS_Mesh, "GunSocket");
 }
 
 // Called when the game starts or when spawned
@@ -41,12 +47,27 @@ void ABaseChar::BeginPlay()
 		}
 
 		AnimInstance = Cast<UBaseAnimInstance>(GetMesh()->GetAnimInstance());
+		TPS_AnimInstance = Cast<UBaseAnimInstance>(TPS_Mesh->GetAnimInstance());
 
-		WeaponComp->SetChildActorClass(WeaponClass);
+		if (IsLocallyControlled())
+			WeaponComp->SetChildActorClass(WeaponClass);
+	
+		if (!IsLocallyControlled())
+			TPS_WeaponChild->SetChildActorClass(WeaponClass);
+
+		//TPS_WeaponChild->SetChildActorClass(WeaponClass);
+		
 		Weapon = Cast<ABaseWeapon>(WeaponComp->GetChildActor());
+		if (!Weapon)
+		{
+			Weapon = Cast<ABaseWeapon>(TPS_WeaponChild->GetChildActor());
+		}
+
 		Weapon->WeaponShoot.AddDynamic(AnimInstance, &UBaseAnimInstance::PlayAttackAnim);
+		//Weapon->WeaponShoot.AddDynamic(TPS_AnimInstance, &UBaseAnimInstance::PlayAttackAnim);
 
 		AnimInstance->OnShootingEnd.AddDynamic(Weapon, &ABaseWeapon::ShootingEnd);
+		//TPS_AnimInstance->OnShootingEnd.AddDynamic(Weapon, &ABaseWeapon::ShootingEnd);
 	}
 }
 
@@ -108,5 +129,14 @@ void ABaseChar::CameraFunction(const FInputActionValue& Value)
 void ABaseChar::AttackFunction(const FInputActionValue& Value)
 {
 	Attacks();
+}
+
+void ABaseChar::ServerShoot()
+{
+	//if is server
+	if (GetNetMode() == NM_ListenServer)
+	{
+
+	}
 }
 

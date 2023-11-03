@@ -39,6 +39,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Animation")
 		UBaseAnimInstance* AnimInstance;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
+		UBaseAnimInstance* TPS_AnimInstance;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 		UCameraComponent* CameraComp;
 
@@ -47,6 +50,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		UChildActorComponent* WeaponComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+		UChildActorComponent* TPS_WeaponChild;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TSubclassOf<ABaseWeapon> WeaponClass;
@@ -105,5 +111,8 @@ public:
 	void CameraFunction(const FInputActionValue& Value);
 
 	void AttackFunction(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+		void ServerShoot();
 
 };
