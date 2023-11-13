@@ -81,6 +81,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Actions")
 		UInputAction* LeftClickAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input|Variables")
+		FRotator ControllerSyncedRotation;
+
 	bool bIsDummy = false;
 
 protected:
@@ -114,5 +117,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void ServerShoot();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void ServerSyncRotation(FRotator ControlRot);
 
 };

@@ -134,9 +134,18 @@ void ABaseChar::AttackFunction(const FInputActionValue& Value)
 void ABaseChar::ServerShoot()
 {
 	//if is server
-	if (GetNetMode() == NM_ListenServer)
-	{
-
-	}
+	
 }
+
+//void ABaseChar::ServerSyncRotation(FRotator ControlRot)
+//{
+//	
+//	ControllerSyncedRotation = ControlRot;
+//
+//	if (!IsLocallyControlled())
+//	{
+//		CameraComp->SetWorldRotation(ControllerSyncedRotation);
+//	}
+//	
+//}
 
