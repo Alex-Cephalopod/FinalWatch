@@ -10,8 +10,10 @@ void ACodeMachinist::Attacks()
 
 	if (Weapon->CanShoot())
 	{
-		FVector Forward = CameraComp->GetForwardVector();
+		/*FVector Forward = CameraComp->GetForwardVector();
 		FVector WorldLocation = CameraComp->GetComponentLocation();
+		//FVector WorldLocation = Weapon->GetActorLocation();
+		//FVector WorldLocation = WeaponComp->GetSocketLocation("Muzzle");
 
 		FVector EndPoint = (Forward * HitscanRange) + WorldLocation;
 
@@ -25,7 +27,15 @@ void ACodeMachinist::Attacks()
 		FHitResult HitResult;
 
 		UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(), WorldLocation, EndPoint, ObjectTypes, true,
-			ActorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true, FLinearColor::Red, FLinearColor::Red);
+			ActorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true, FLinearColor::Red, FLinearColor::Red); */
+
+		FVector CameraLocation = CameraComp->GetComponentLocation();
+		FRotator CameraRotation = CameraComp->GetComponentRotation();
+		FVector MuzzleLocation = WeaponComp->GetSocketLocation("Muzzle");
+
+		FVector EndPoint = (CameraComp->GetForwardVector() * Weapon->HitscanRange) + MuzzleLocation;
+
+
 
 		Weapon->Attack();
 	}

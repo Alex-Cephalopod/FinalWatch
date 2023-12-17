@@ -99,6 +99,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Mesh")
 		USkeletalMeshComponent* TPS_Mesh;
 
+	UPROPERTY(EditAnywhere, Category = "Mesh")
+		USkeletalMeshComponent* FPS_Mesh;
+
 public:	
 	UFUNCTION(BlueprintCallable, Category = "Actions|Functions")
 		virtual void Attacks();
@@ -115,7 +118,7 @@ public:
 
 	void AttackFunction(const FInputActionValue& Value);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(NetMulticast, Reliable)
 		void ServerShoot();
 
 	UFUNCTION(BlueprintImplementableEvent)

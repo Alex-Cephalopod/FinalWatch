@@ -19,8 +19,5 @@ public:
 	void Attacks() override;
 
 protected:
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon")
-		float HitscanRange;
 	
 };

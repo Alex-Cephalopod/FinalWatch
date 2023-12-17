@@ -13,17 +13,23 @@ ABaseChar::ABaseChar()
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
-
-	SpringArmComp->SetupAttachment(GetMesh(), "head");
-	CameraComp->SetupAttachment(SpringArmComp);
-
 	WeaponComp = CreateDefaultSubobject<UChildActorComponent>(TEXT("WeaponComp"));
-	WeaponComp->SetupAttachment(GetMesh(), "GripPoint");
-
 	TPS_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TPS_Mesh"));
-	TPS_Mesh->SetupAttachment(GetCapsuleComponent());
-
+	FPS_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPS_Mesh"));
 	TPS_WeaponChild = CreateDefaultSubobject<UChildActorComponent>(TEXT("TPS_WeaponChild"));
+
+	//SpringArmComp->SetupAttachment(GetMesh(), "head");
+	//CameraComp->SetupAttachment(SpringArmComp);
+
+	SpringArmComp->SetupAttachment(RootComponent);
+	CameraComp->SetupAttachment(SpringArmComp);
+	FPS_Mesh->SetupAttachment(CameraComp);
+	//GetMesh()->SetupAttachment(SpringArmComp);
+
+	WeaponComp->SetupAttachment(FPS_Mesh, "GripPoint");
+
+	TPS_Mesh->SetupAttachment(RootComponent);
+
 	TPS_WeaponChild->SetupAttachment(TPS_Mesh, "GunSocket");
 }
 
@@ -46,7 +52,7 @@ void ABaseChar::BeginPlay()
 			}
 		}
 
-		AnimInstance = Cast<UBaseAnimInstance>(GetMesh()->GetAnimInstance());
+		AnimInstance = Cast<UBaseAnimInstance>(FPS_Mesh->GetAnimInstance());
 		TPS_AnimInstance = Cast<UBaseAnimInstance>(TPS_Mesh->GetAnimInstance());
 
 		if (IsLocallyControlled())
@@ -131,7 +137,7 @@ void ABaseChar::AttackFunction(const FInputActionValue& Value)
 	Attacks();
 }
 
-void ABaseChar::ServerShoot()
+void ABaseChar::ServerShoot_Implementation()
 {
 	//if is server
 	

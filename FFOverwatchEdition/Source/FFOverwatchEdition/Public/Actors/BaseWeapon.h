@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-//#include "Actors/BaseChar.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "BaseWeapon.generated.h"
 
@@ -31,11 +30,20 @@ public:
 	UPROPERTY()
 		bool bAnimating;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon")
+		float HitscanRange;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	APawn* OwningChar;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon")
+		bool bIsHitscan;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Weapon")
+		bool bIsProjectile;
 
 public:	
 	// Called every frame
