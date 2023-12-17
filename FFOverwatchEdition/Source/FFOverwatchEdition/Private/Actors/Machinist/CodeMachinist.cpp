@@ -35,7 +35,9 @@ void ACodeMachinist::Attacks()
 
 		FVector EndPoint = (CameraComp->GetForwardVector() * Weapon->HitscanRange) + MuzzleLocation;
 
+		FHitResult HitResult;
 
+		//UKismetSystemLibrary::LineTraceSingle(GetWorld(), MuzzleLocation, EndPoint,
 
 		Weapon->Attack();
 	}
